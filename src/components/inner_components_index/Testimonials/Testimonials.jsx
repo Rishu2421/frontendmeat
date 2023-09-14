@@ -2,7 +2,7 @@ import React from "react";
 import { Carousel } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import './Testimonial.css'
+import "./Testimonial.css";
 function Testimonials() {
   return (
     <section className="section__container testimonial-container">
@@ -16,9 +16,16 @@ function Testimonials() {
             </span>
             <h4>Our Clients Review</h4>
             <p>
-              Excellent service and very humble and gentle executive staff mutton quality is good and fresh. Once the order was not good as expected I informed them the issue. They immediately re-delivered same order  complimentary. I like this This thing.
+              Excellent service and very humble and gentle executive staff
+              mutton quality is good and fresh. Once the order was not good as
+              expected I informed them the issue. They immediately re-delivered
+              same order complimentary. I like this This thing.
             </p>
-            <img src="/assets/user.png" alt="user" />
+            <img
+              src="/assets/user.png"
+              style={{ width: "5rem", height: "5rem" }}
+              alt="user"
+            />
             <h5>Asif Baig</h5>
           </div>
         </Carousel.Item>
@@ -30,10 +37,15 @@ function Testimonials() {
             </span>
             <h4>Our Clients Review</h4>
             <p>
-            The quality of all meats which we have purchased, especially freshwater fishes have been great. The delivery experience has been good as well with respect to time to delivery.
-
+              The quality of all meats which we have purchased, especially
+              freshwater fishes have been great. The delivery experience has
+              been good as well with respect to time to delivery.
             </p>
-            <img src="/assets/user.png" alt="user" />
+            <img
+              src="/assets/user.png"
+              style={{ width: "5rem", height: "5rem" }}
+              alt="user"
+            />
             <h5>Gulshan Enterprises</h5>
           </div>
         </Carousel.Item>
@@ -45,11 +57,14 @@ function Testimonials() {
             </span>
             <h4>Our Clients Review</h4>
             <p>
-             Excellent service and good quality products.
-Really happy with the quality and taste.
-Very fresh item delivered on time 😊 …
+              Excellent service and good quality products. Really happy with the
+              quality and taste. Very fresh item delivered on time 😊 …
             </p>
-            <img src="/assets/user.png" alt="user" />
+            <img
+              src="/assets/user.png"
+              style={{ width: "5rem", height: "5rem" }}
+              alt="user"
+            />
             <h5>Deepa Mirchandani</h5>
           </div>
         </Carousel.Item>
@@ -59,5 +74,3 @@ Very fresh item delivered on time 😊 …
 }
 
 export default Testimonials;
-
-
