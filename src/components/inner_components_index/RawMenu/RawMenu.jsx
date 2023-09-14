@@ -26,7 +26,7 @@ function RawMenu() {
   
   return (
     <div className="menu bestsellers-container" style={{marginTop:"5rem"}} id={`scroll1`}>
-      <div className="heading" style={{backgroundColor:"black",color:"#BA0001"}}>
+      <div className="heading" style={{backgroundColor:"black",color:"white"}}>
         <h1>Raw Menu</h1>
         {/* <h3>&mdash; Menu &mdash;</h3> */}
       </div>
