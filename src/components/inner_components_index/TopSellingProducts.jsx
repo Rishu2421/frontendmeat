@@ -7,7 +7,7 @@ import { useMediaQuery } from "react-responsive";
 
 function TopSellingProducts() {
   const isMobile = useMediaQuery({ maxWidth: 991 }); // Define mobile breakpoint
-
+  const isSmallWidth=useMediaQuery({ maxWidth: 349 });
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -28,11 +28,11 @@ function TopSellingProducts() {
     <div className="menu bestsellers-container" style={{marginTop:"5rem"}} id={`scroll1`}>
       <div className="heading">
         <h1>Top Selling Marinades</h1>
-        <h3>&mdash; Menu &mdash;</h3>
+        {/* <h3>&mdash; Menu &mdash;</h3> */}
       </div>
 
       {isMobile ? ( // Render Carousel only on mobile screens
-        <div className="carousel-container">
+        <div className="carousel-container" style={{width:isSmallWidth&&"20rem"}}>
           <Carousel
             indicators={false}
             prevIcon={<span className="carousel-control-prev-icon" aria-hidden="true" />}
@@ -63,8 +63,12 @@ function TopSellingProducts() {
             ))}
           {/* </div> */}
         {/* </div> */}
+        
      </>
       )}
+      {/* <div className="caption">
+        <a href="/products/topselling" className="btn text-dark" style={{backgroundColor:"#BA0001"}}>View all</a>
+      </div> */}
     </div>
   );
 }

@@ -56,8 +56,8 @@ function Items({key, showAll, category, title, subtitleProps,subCategoryies }) {
     <ScrollButton items={subCategoryies} />
     <div className="menu bestsellers-container" id={`scroll${key}`}>
        <div className="heading">
-      <h1> <strong>All Products </strong></h1>
-        {/* {title && <h1>{title}</h1>} */}
+  
+        {title && <h1><strong> {title} </strong></h1>}
         {/* <h3>&mdash; {subtitleProps && subtitleProps.toUpperCase()} &mdash;</h3> */}
         
       </div>
@@ -74,22 +74,3 @@ function Items({key, showAll, category, title, subtitleProps,subCategoryies }) {
 export default Items;
 
 
-
-// <section className="category-info-text">
-//         <div className="container">
-//         {hideTitle || 
-//           <div className="title">
-//           <h2>{getTitle()}</h2>
-//           </div>
-//         }
-//           <div className="info-text">
-//           {Array.isArray(renderProducts()) ? (
-//   renderProducts().map((product) => (
-//     <Card key={product._id} product={product} />
-//   ))
-// ) : (
-//   <p>No products to display.</p>
-// )}  
-//           </div>
-//         </div>
-//       </section>

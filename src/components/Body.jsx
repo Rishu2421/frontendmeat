@@ -7,6 +7,8 @@ import AboutUs from "./inner_components_index/AboutUs/AboutUs";
 import Meetgram from "./inner_components_index/Meetgram";
 import Testimonials from "./inner_components_index/Testimonials/Testimonials";
 import { useNavigate } from "react-router-dom";
+import Marinades from "./inner_components_index/Marinades/Marinades";
+import RawMenu from "./inner_components_index/RawMenu/RawMenu";
 
 function Body({ categoryChoice }){
   const navigate=useNavigate();
@@ -21,7 +23,10 @@ function Body({ categoryChoice }){
      
       <TopSellingProducts />
       {/* <Meetgraminfo /> */}
+      <Marinades />
+
       <BonelessCuts />  
+      <RawMenu />
       <Meetgram />
       <AboutUs />
       <Testimonials />

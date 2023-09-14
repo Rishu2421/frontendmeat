@@ -10,8 +10,8 @@ const AdminApp = () => {
 
   useEffect(() => {
     // Check if the admin token exists in local storage
-    const adminToken = localStorage.getItem('adminToken');
-    console.log("Hello Admin")
+    const adminToken = Cookies.get('adminToken');
+    console.log("Hello Admin");
     if (adminToken) {
       setIsAuthenticated(true);
     } else {

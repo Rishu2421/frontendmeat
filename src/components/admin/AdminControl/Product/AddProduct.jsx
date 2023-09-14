@@ -18,7 +18,9 @@ const AddProduct = () => {
     category: '',
     subcategory: '',
     isTopSelling: false,
-    isBoneless: false,
+    isBoneless: false, 
+    isMarinade:false,
+    isRawMenu:false
   });
 
   useEffect(() => {
@@ -77,6 +79,8 @@ const AddProduct = () => {
       formData.append('subcategory', product.subcategory);
       formData.append('isTopSelling', product.isTopSelling);
       formData.append('isBoneless', product.isBoneless);
+      formData.append('isMarinade', product.isMarinade);
+      formData.append('isRawMenu', product.isRawMenu);
 
       // Send the product data to the backend API
       const response = await axios.post(`${backendUrl}/api/admin/addproduct`, formData, {
@@ -100,6 +104,8 @@ const AddProduct = () => {
           subcategory: '',
           isTopSelling: false,
           isBoneless: false,
+          isMarinade:false,
+          isRawMenu:false
         });
       } else {
         setAlert({ message: 'Product not added, please retry', type: 'warning' });
@@ -275,10 +281,25 @@ return (
           onChange={(e) => setProduct({ ...product, isTopSelling: e.target.checked })}
         />
         <label className="form-check-label" htmlFor="isTopSelling">
-          Top Selling
+          Top Selling Marinades
         </label>
       </div>
 
+      <div className="mb-3 form-check">
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="isMarinade"
+          name="isMarinade"
+          checked={product.isMarinade}
+          onChange={(e) => setProduct({ ...product, isMarinade: e.target.checked })}
+        />
+        <label className="form-check-label" htmlFor="isMarinade">
+          Marinade Menu
+        </label>
+      </div>
+
+{/* in frontend it is top selling cut but in backend it is isBoneless  */}
       <div className="mb-3 form-check">
         <input
           type="checkbox"
@@ -289,7 +310,22 @@ return (
           onChange={(e) => setProduct({ ...product, isBoneless: e.target.checked })}
         />
         <label className="form-check-label" htmlFor="isBoneless">
-          Boneless
+          Top Selling Cut
+        </label>
+      </div>
+
+
+      <div className="mb-3 form-check">
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="isBoneless"
+          name="isBoneless"
+          checked={product.isRawMenu}
+          onChange={(e) => setProduct({ ...product, isRawMenu: e.target.checked })}
+        />
+        <label className="form-check-label" htmlFor="isRawMenu">
+           Raw Menu
         </label>
       </div>
 

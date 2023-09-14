@@ -16,6 +16,7 @@ import Cookies from 'js-cookie';
 import MobileDownload from "../MobileDownload/MobileDownload";
 import CategoryApp from "../inner_components_category/CategoryApp";
 import FAQPage from "../QuickLinks/FAQs/FAQPage";
+
 import Terms from "../QuickLinks/Terms/Terms";
 import PrivacyPolicy from "../QuickLinks/PrivacyPolicy/PrivacyPolicy";
 import ContactUs from "../QuickLinks/ContactUs/ContactUs";
@@ -83,7 +84,7 @@ const handleToggleClick = () => {
           <Route path="/category/:categoryName" element={<CategoryApp categoryChoice={handleCategoryChoice} category={categoryName} />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/products" element={<Product />} />
-          <Route path="/product/:productType" element={<Items showAll={true} />} />
+          <Route path="/product/:productType" element={<Items title="All-Products" showAll={true} />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/admin/*" element={<AdminApp />} />
           <Route path="/user/myorder" element={<MyOrderPage isAdmin={false} userId={userId} />} />
