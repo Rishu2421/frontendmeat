@@ -7,6 +7,7 @@ import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useLocation } from "react-router-dom";
 import Cookies from 'js-cookie';
 import backendUrl from "../../config";
+import FacebookLogin from 'react-facebook-login';
 const LoginModal = ({ showLoginModal, handleLoginModalClose, handleLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,10 +32,10 @@ const LoginModal = ({ showLoginModal, handleLoginModalClose, handleLoginSuccess 
   }
   }, [location.search]);
  
-  const handleLoginWithFacebook = () => {
-    // Show alert message for Facebook login (Coming Soon)
-    setErrorAlert("Facebook login is coming soon. Please try another way.");
-  };
+  // const handleLoginWithFacebook = () => {
+  //   // Show alert message for Facebook login (Coming Soon)
+  //   setErrorAlert("Facebook login is coming soon. Please try another way.");
+  // };
   const handleSignupWithEmail = () => {
     axios
       .post(`${backendUrl}/api/user/register`, { email, password })
@@ -49,7 +50,7 @@ const LoginModal = ({ showLoginModal, handleLoginModalClose, handleLoginSuccess 
           Cookies.set('token', token, { expires: 7 }); // Store the token in a cookie with a 7-day expiration
           Cookies.set('userId', userId, { expires: 7 }); // Store the userId in a cookie with a 7-day expiration
   
-          handleLoginSuccess();
+           handleLoginSuccess();
         }
         handleLoginModalClose();
       })
@@ -58,55 +59,6 @@ const LoginModal = ({ showLoginModal, handleLoginModalClose, handleLoginSuccess 
       });
   };
   
-
-  // const handleSignupWithEmail = () => {
-  //   axios
-  //     .post("/api/user/register", { email, password })
-  //     .then((response) => {
-  //       // If the login is successful, you can call handleLoginSuccess() here
-  //       // and close the modal after successful login
-  //       console.log(response.data); // You can do further handling of the response here if needed
-  //       if (response.status === 200) {
-  //           const token = response.data.token; // Extract the JWT token from the response
-  //           const userId = response.data.userId;
-  
-  //           localStorage.setItem("token", token); // Store the token in localStorage
-  //           localStorage.setItem("userId", userId);
-          
-  
-  //           handleLoginSuccess(); // Call the parent component's function to update authentication status and close the modal
-  //       }
-  //       handleLoginModalClose();
-  //     })
-  //     .catch((error) => {
-  //       // Handle registration error
-  //       setErrorAlert("User already registered. Please log in instead.");
-  //     });
-  // };
-
-  // const handleLoginWithEmail = () => {
-  //   axios
-  //     .post("/api/user/login", { email, password })
-  //     .then((response) => {
-  //       // If the login is successful, you can call handleLoginSuccess() here
-  //       // and close the modal after successful login
-  //       console.log(response.data); // You can do further handling of the response here if needed
-  //       if (response.status === 200) {
-  //           const token = response.data.token; // Extract the JWT token from the response
-  //           const userId = response.data.userId;
-  
-  //           localStorage.setItem("token", token); // Store the token in localStorage
-  //           localStorage.setItem("userId", userId);
-           
-  //           handleLoginSuccess(); // Call the parent component's function to update authentication status and close the modal
-  //         }
-  //       handleLoginModalClose();
-  //     })
-  //     .catch((error) => {
-  //       // Handle login error
-  //       setErrorAlert("Invalid credentials. Please try again.");
-  //     });
-  // };
 
   
 const handleLoginWithEmail = () => {
@@ -138,8 +90,44 @@ const handleLoginWithEmail = () => {
 
   };
   
-
+  const responseFacebook = (response) => {
+    console.log("I am executing");
+    if (response.status === "unknown") {
+      // User canceled the Facebook login
+      setErrorAlert("Facebook login was canceled.");
+    } else {
+      // You can access the user's Facebook information in the `response` object
+      // You may want to send this information to your server for further processing
+      const { id, name, email, accessToken } = response;
   
+      // Example API request to your backend:
+      axios
+        .post(`${backendUrl}/api/user/login-with-facebook`, {
+          facebookId: id,
+          name,
+          email,
+          accessToken,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            const token = response.data.token;
+            const userId = response.data.userId;
+  
+            Cookies.set("token", token, { expires: 7 });
+            Cookies.set("userId", userId, { expires: 7 });
+  
+            handleLoginSuccess();
+          }
+          handleLoginModalClose();
+        })
+        .catch((error) => {
+          setErrorAlert("Facebook login failed. Please try another way.");
+        });
+    }
+  };
+ 
+  
+ 
 
   return (
     <Modal
@@ -197,13 +185,29 @@ const handleLoginWithEmail = () => {
                <FontAwesomeIcon icon={faGoogle} className="me-2" /> Sign In with Google
               </Button>
               
-              <Button
-                variant="primary"
-                className="btn d-inline mt-1 align-items-center"
-                onClick={handleLoginWithFacebook}
+             
+               <FacebookLogin
+              appId="652309396876568" // Replace with your Facebook App ID
+             
+              fields="name,email,picture"
+              callback={responseFacebook}
+              cssClass="btn btn-primary btn-md mt-1"
+              icon="fa-facebook"
+              // textButton="Log in with Facebook"
+              textButton={<span className="ml-2">Log in with Facebook</span>} // Add margin to the right of the text
+            />
+             
+               
+             <Button
+                variant="secondary"
+                style={{width:"12rem"}}
+                className="btn me-4 mt-1 d-inline align-items-center"
+                onClick={handleLoginWithGoogle}
               >
-               <FontAwesomeIcon icon={faFacebook} className="me-2" /> Sign In with Facebook
+               <i class="glyphicon glyphicon-user"></i> Sign In As Guest
               </Button>
+              
+             
             </form>
           </div>
         )}
