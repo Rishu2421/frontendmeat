@@ -23,10 +23,10 @@ function Body({ categoryChoice }){
      
       <TopSellingProducts />
       {/* <Meetgraminfo /> */}
-      <Marinades />
+      {/* <Marinades /> */}
 
       <BonelessCuts />  
-      <RawMenu />
+      {/* <RawMenu /> */}
       <Meetgram />
       <AboutUs />
       <Testimonials />

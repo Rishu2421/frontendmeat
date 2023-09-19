@@ -10,7 +10,6 @@ function Product() {
   const location = useLocation();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const userId = Cookies.get('userId');
  
   useEffect(() => {
     // Extract the productId from the URL
@@ -42,16 +41,13 @@ function Product() {
 
   return (
     <div>
-      {/* <Banner /> */}
-      {/* <RedBackgroundWrap /> */}
+  
       {loading ? (
         <div>Loading...</div>
       ) : (
         <>
-          <ProductWrap  product={product} userId={userId}/>
-          {/* <Sourcing /> */}
-          {/* <TheWay /> */}
-          {/* <Items showAll={false} /> */}
+          <ProductWrap  product={product} />
+         
         </>
       )}
     </div>

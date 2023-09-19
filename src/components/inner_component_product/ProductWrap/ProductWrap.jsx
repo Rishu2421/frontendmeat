@@ -4,7 +4,7 @@ import AddToCartButton from '../../product/AddToCartButton/AddToCartButton';
 import BoxWrap from '../BoxWrap/BoxWrap';
 import backendUrl from '../../../config';
 
-function ProductWrap({ product,userId }) {
+function ProductWrap({ product }) {
 
   const [count, setCount] = useState(1);
   const { name, image, quantityAndMrp, description,isBoneless } = product;
@@ -116,12 +116,9 @@ function ProductWrap({ product,userId }) {
               product={product} 
               quantity={count} 
               selectedQuantityAndMrp={{
-
                   quantity: quantityAndMrp[selectedDetailIndex].quantity, 
                   mrp: quantityAndMrp[selectedDetailIndex].mrp,
-                   numOfPieces: quantityAndMrp[selectedDetailIndex].numOfPieces 
-                
-                   }}/>
+                   numOfPieces: quantityAndMrp[selectedDetailIndex].numOfPieces    }}/>
                     
               </div>
             </div>

@@ -1,8 +1,6 @@
 {
   "name": "metagram",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://chersmeatgram.com/",
   "dependencies": {
     "@coreui/coreui": "5.0.0-alpha.1",
     "@coreui/react": "4.9.2",

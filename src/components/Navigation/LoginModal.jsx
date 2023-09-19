@@ -19,11 +19,16 @@ const LoginModal = ({ showLoginModal, handleLoginModalClose, handleLoginSuccess 
       const params = new URLSearchParams(location.search);
       const token = params.get("token");
       const userId = params.get("userId");
+      if(token && userId){
 
+      
+      Cookies.set('token', token, { expires: 7 });
+      Cookies.set('userId', userId, { expires: 7 });
       // Save the token and userId to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
     }
+  }
   }, [location.search]);
  
   const handleLoginWithFacebook = () => {
@@ -186,16 +191,15 @@ const handleLoginWithEmail = () => {
               
               <Button
                 variant="danger"
-                className="btn me-4 d-inline align-items-center"
+                className="btn me-4 mt-1 d-inline align-items-center"
                 onClick={handleLoginWithGoogle}
               >
                <FontAwesomeIcon icon={faGoogle} className="me-2" /> Sign In with Google
               </Button>
               
-              
               <Button
                 variant="primary"
-                className="btn d-inline align-items-center"
+                className="btn d-inline mt-1 align-items-center"
                 onClick={handleLoginWithFacebook}
               >
                <FontAwesomeIcon icon={faFacebook} className="me-2" /> Sign In with Facebook

@@ -142,7 +142,7 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
         mobileNumber,
         address,
         userId,
-        amount:totalAmount,
+        amount:totalAmount+50,
         pincode,
         razorpay_order_id,
         razorpay_payment_id,
@@ -172,7 +172,7 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
         mobileNumber,
         address,
         userId,
-        amount:totalAmount,
+        amount:totalAmount+50,
         pincode,
       };
    
@@ -224,6 +224,7 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
                <h5 id="total_items">Name:- </h5>
 
                     <p>subtotal:-</p>
+                    <p>Delivery:- </p>
                     <p>Apply Coupon:- </p>
                     {discount > 0 && ( // Display the discount only if greater than 0
                         <>
@@ -240,8 +241,10 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
 
 
 
-                    <p id="subtotal">{name}</p>
-                    <p id="subtotal">{amount}</p>
+                    <p id="subtotal" style={{marginBottom:"0.5rem"}}>{name}</p>
+                    <p id="subtotal" >{amount}</p>
+                    <p id="subtotal" > +50 </p>
+                    
                     <div className="d-flex">
                         <input
                           type="text"
@@ -262,7 +265,7 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
                           </p>
                         </>
                       )}
-                      <h6 id="total" className='mt-3'>{discount?discount:amount}</h6>
+                      <h6 id="total" className='mt-3'>{discount?discount+50:amount+50}</h6>
 
                 </div>
             </div>
