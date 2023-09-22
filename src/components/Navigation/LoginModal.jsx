@@ -4,6 +4,7 @@ import { Modal, Button,Alert } from "react-bootstrap";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 import Cookies from 'js-cookie';
 import backendUrl from "../../config";
@@ -125,6 +126,47 @@ const handleLoginWithEmail = () => {
         });
     }
   };
+
+  const handleGuestLogin = () => {
+    // Generate a guest username and email
+    const guestUsername = "Guest" + Math.floor(Math.random() * 1000);
+    const guestEmail = guestUsername + "@example.com";
+    
+    // Generate a random guest password (e.g., a random 8-character string)
+    const guestPassword = generateRandomPassword(8);
+
+    // Send the guest user data (including name, email, and password) to the backend for registration
+    axios
+      .post(`${backendUrl}/api/user/register`, { name: guestUsername, email: guestEmail, password: guestPassword })
+      .then((response) => {
+        if (response.status === 200) {
+          const token = response.data.token;
+          const userId = response.data.userId;
+
+          Cookies.set('token', token, { expires: 7 }); // Store the token in a cookie with a 7-day expiration
+          Cookies.set('userId', userId, { expires: 7 }); // Store the userId in a cookie with a 7-day expiration
+
+          // Handle the successful guest login
+          handleLoginSuccess();
+        }
+        handleLoginModalClose();
+      })
+      .catch((error) => {
+        setErrorAlert("Guest login failed. Please try another way."); // Handle any guest login errors
+      });
+  };
+
+  // Function to generate a random password
+  const generateRandomPassword = (length) => {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    return password;
+  };
+
  
   
  
@@ -179,10 +221,11 @@ const handleLoginWithEmail = () => {
               
               <Button
                 variant="danger"
-                className="btn me-4 mt-1 d-inline align-items-center"
+                style={{"text-align":"start"}}
+                className="btn mt-1 d-inline align-items-center"
                 onClick={handleLoginWithGoogle}
               >
-               <FontAwesomeIcon icon={faGoogle} className="me-2" /> Sign In with Google
+               <FontAwesomeIcon icon={faGoogle} className="me-1" /> Sign In with Google
               </Button>
               
              
@@ -191,20 +234,20 @@ const handleLoginWithEmail = () => {
              
               fields="name,email,picture"
               callback={responseFacebook}
-              cssClass="btn btn-primary btn-md mt-1"
+              cssClass="btn btn-primary btn-md mt-1 text-start"
               icon="fa-facebook"
               // textButton="Log in with Facebook"
-              textButton={<span className="ml-2">Log in with Facebook</span>} // Add margin to the right of the text
+              textButton={<span className="ml-1">Sign In with Facebook</span>} // Add margin to the right of the text
             />
              
                
              <Button
                 variant="secondary"
-                style={{width:"12rem"}}
+                style={{width:"12.1rem" , textAlign:"justify"}}
                 className="btn me-4 mt-1 d-inline align-items-center"
-                onClick={handleLoginWithGoogle}
+                onClick={handleGuestLogin}
               >
-               <i class="glyphicon glyphicon-user"></i> Sign In As Guest
+              <FontAwesomeIcon icon={faUser} className="mt-1 me-1" /> Sign in as Guest
               </Button>
               
              

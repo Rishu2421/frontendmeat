@@ -285,7 +285,7 @@ return (
         </label>
       </div>
 
-      <div className="mb-3 form-check">
+      {/* <div className="mb-3 form-check">
         <input
           type="checkbox"
           className="form-check-input"
@@ -297,7 +297,7 @@ return (
         <label className="form-check-label" htmlFor="isMarinade">
           Marinade Menu
         </label>
-      </div>
+      </div> */}
 
 {/* in frontend it is top selling cut but in backend it is isBoneless  */}
       <div className="mb-3 form-check">
@@ -315,7 +315,7 @@ return (
       </div>
 
 
-      <div className="mb-3 form-check">
+      {/* <div className="mb-3 form-check">
         <input
           type="checkbox"
           className="form-check-input"
@@ -327,7 +327,7 @@ return (
         <label className="form-check-label" htmlFor="isRawMenu">
            Raw Menu
         </label>
-      </div>
+      </div> */}
 
       <button type="submit" className="btn btn-primary">
         Add Product

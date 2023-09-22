@@ -10,6 +10,8 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
   const  userId= Cookies.get('userId');
   const [paymentMethod, setPaymentMethod] = useState('cashOnDelivery');
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [showOrderInfo, setShowOrderInfo] = useState(false);
+ 
   const [orderError, setOrderError] = useState(null);
   const [couponCode, setCouponCode] = useState(''); // State to store the entered coupon code
   const [discount, setDiscount] = useState(0); // State to store the discount amount
@@ -165,6 +167,7 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
   const handleCashOnDelivery = async (e) => {
 
     e.preventDefault();
+    setShowOrderInfo(true);
     try {
       // Create the order on the backend without Razorpay details
       const data = {
@@ -178,9 +181,9 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
    
       const response = await axios.post(`${backendUrl}/api/payment/cashondelivery`, data);
       if (response.data.success) {
-        setOrderPlaced(true);
+       
         setOrderError(null);
-
+        setShowOrderInfo(false);
         const token = Cookies.get('token');
         window.location.href = `/paymentsuccess?reference="Cash On Delivery"&token=${token}&userId=${userId}`;
 
@@ -188,11 +191,13 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
         console.log('Order confirmed with Cash On Delivery');
       } else {
         setOrderPlaced(false);
+        setShowOrderInfo(false);
         setOrderError('Failed to place the order. Please try again later.');
         console.log('Order placement failed.');
       }
     } catch (error) {
       setOrderPlaced(false);
+      setShowOrderInfo(false);
       setOrderError('An error occurred while processing the order. Please try again later.');
       console.error('An error occurred while processing the order:', error);
       // Handle errors
@@ -308,16 +313,19 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
               </Button>
             )} */}
 
-            {paymentMethod === 'cashOnDelivery' && (
+            {!showOrderInfo && paymentMethod === 'cashOnDelivery' && (
               <Button variant="success" type="submit">
                 Confirm Order
               </Button>
             )}
 
-            
-            {orderPlaced && (
-              <Alert variant="success">Your Order is placed Successfully. Thank you!</Alert>
-            )}
+            {showOrderInfo && (
+                  <Alert variant="info">Placing your order, please wait...</Alert>
+                )}
+
+                {orderPlaced && !orderError && (
+                  <Alert variant="success">Your Order is placed Successfully. Thank you!</Alert>
+                )}
 
             {orderError && (
               <Alert variant="danger">Error: {orderError}</Alert>
