@@ -25,7 +25,7 @@ function TopSellingProducts() {
 
   
   return (
-    <div className="menu bestsellers-container" style={{marginTop:"5rem"}} id={`scroll1`}>
+    <div className="menu bestsellers-container" style={{marginTop:"7rem"}} id={`scroll1`}>
       <div className="heading">
         <h1>Top Selling Marinades</h1>
         {/* <h3>&mdash; Menu &mdash;</h3> */}
@@ -75,56 +75,3 @@ function TopSellingProducts() {
 
 export default TopSellingProducts;
 
-
-// return (
-//   <div className="menu bestsellers-container" id={`scroll1`}>
-//     <div className="heading">
-//       <h1>Top Selling Marinates</h1>
-//       <h3>&mdash; Menu &mdash;</h3>
-//     </div>
-
-//     {products.length > 0 ? (
-//       <Carousel
-//         indicators={false}
-//         prevIcon={<span className="carousel-control-prev-icon" aria-hidden="true" />}
-//         nextIcon={<span className="carousel-control-next-icon" aria-hidden="true" />}
-//         nextLabel=""
-//         prevLabel=""
-//         // Customize styles for mobile screens
-//         style={isMobile ? { margin: "0 -15px", overflow: "hidden" } : {}}
-//       >
-//         {products.map((product, index) => (
-//           <Carousel.Item key={index}>
-//             <div className="d-flex justify-content-center">
-//               {/* Conditionally set the number of cards based on screen size */}
-//               {isMobile ? (
-//                 <div className="col-12">
-//                   <CarouselCard product={product} notShowDescription={false} />
-//                 </div>
-//               ) : (
-//                 <>
-//                   <div className="col-md-4">
-//                     <CarouselCard product={product} notShowDescription={false} />
-//                   </div>
-//                   {products[index + 1] && (
-//                     <div className="col-md-4">
-//                       <CarouselCard product={products[index + 1]} notShowDescription={false} />
-//                     </div>
-//                   )}
-//                   {products[index + 2] && (
-//                     <div className="col-md-4">
-//                       <CarouselCard product={products[index + 2]} notShowDescription={false} />
-//                     </div>
-//                   )}
-//                 </>
-//               )}
-//             </div>
-//           </Carousel.Item>
-//         ))}
-//       </Carousel>
-//     ) : (
-//       <LoadingOverlay /> // Display a loading message while fetching data
-//     )}
-//   </div>
-// );
-// }

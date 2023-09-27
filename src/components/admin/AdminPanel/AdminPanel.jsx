@@ -8,6 +8,7 @@ import CategoryView from '../AdminControl/Category/CategoryView';
 import './AdminPanel.css';
 import MyOrderPage from '../../orders/MyOrderPage';
 import BannerComponent from '../AdminControl/Banner/BannerComponent';
+import AdminOrderPage from '../AdminControl/Order/AdminOrderPage';
 
 const AdminPanel = ({ onLogout }) => {
   const location = useLocation();
@@ -58,7 +59,12 @@ const AdminPanel = ({ onLogout }) => {
             
             <div className="admin-button">
               <Link to="/admin/order" className="nav-link">
-                View Orders
+                View All Orders
+              </Link>
+            </div>
+            <div className="admin-button">
+              <Link to="/admin/order/today" className="nav-link">
+                View Today Order
               </Link>
             </div>
             <div className="admin-button">
@@ -78,6 +84,7 @@ const AdminPanel = ({ onLogout }) => {
               <Route path="/view-category" element={<CategoryView />} />
               <Route path="/banner" element={<BannerComponent />} />
               <Route path="/order" element={<MyOrderPage isAdmin={true} />} />
+              <Route path="/order/today" element={<AdminOrderPage />} />
             </Routes>
           </div>
         </div>

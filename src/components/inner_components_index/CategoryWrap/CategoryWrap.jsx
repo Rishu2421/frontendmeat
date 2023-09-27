@@ -26,7 +26,7 @@ function CategoryWrap({ onCategoryChoice }) {
     setShowAllCategories(!showAllCategories);
   };
 
-  const maxVisibleCategories = showAllCategories ? categories.length : 5;
+  const maxVisibleCategories = showAllCategories ? categories.length : 7;
   const visibleCategories = categories && categories.length > 0 ? categories.slice(0, maxVisibleCategories) : [];
 
   return (
@@ -54,7 +54,7 @@ function CategoryWrap({ onCategoryChoice }) {
                 </Link>
               </div>
             ))}
-            {categories.length > 5 && (
+            {categories.length > 7 && (
               <div className="col-4 col-md-1 mb-2">
                 <div className={`circ ${showAllCategories ? "view-less" : "view-all"}`} onClick={toggleShowAllCategories}>
                   <div className="crcl">

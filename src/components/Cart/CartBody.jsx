@@ -5,6 +5,7 @@ import CheckoutPage from "../orders/CheckoutPage/CheckoutPage";
 import {  Form,Alert } from 'react-bootstrap';
 
 function CartBody({selectedItemPrice}){
+  const defaultDate = new Date().toISOString().split("T")[0];
 
     const [showCheckout, setShowCheckout] = useState(false);
     const [cartItems, setCartItems] = useState([]);
@@ -15,6 +16,22 @@ function CartBody({selectedItemPrice}){
     const [pincode, setPincode] = useState('');
   const [isBhopalPincode, setIsBhopalPincode] = useState(false);
   const [showPincodeAlert, setShowPincodeAlert] = useState(false);  
+  const [isOrderForLater, setIsOrderForLater] = useState(false);  
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(defaultDate);
+  const [selectedDeliveryTime, setSelectedDeliveryTime] = useState("Any time"); // State for selected delivery time
+ 
+  // Function to check if the current day is Tuesday
+  const isTuesday = () => {
+    const today = new Date();
+    return today.getDay() === 2; // 0: Sunday, 1: Monday, 2: Tuesday, ...
+  };
+
+  // Function to check if the current time is between 8 PM and 9 AM
+  const isInvalidTime = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    return currentHour >= 20 || currentHour < 9;
+  };
 
     useEffect(() => {
         fetchCartItems();
@@ -115,10 +132,25 @@ function CartBody({selectedItemPrice}){
     };
     const filteredCartItems = cartItems.filter((item) => item.item && item.item._id);
 
+    const calculateNextDeliveryDate = () => {
+      const today = new Date();
+      const nextDay = new Date(today);
+      nextDay.setDate(today.getDate() + 1);
+      return nextDay.toISOString().split('T')[0];
+    };
+  
+    useEffect(() => {
+      // Set the default delivery date when "Is Order for Later" is checked
+      if (isOrderForLater) {
+        setSelectedDeliveryDate(calculateNextDeliveryDate());
+      }
+    }, [isOrderForLater]);
+
+  
 return (
     <>
 {showCheckout ? (
-      <CheckoutPage name={name} mobileNumber={mobileNumber} address={address} amount={calculateTotalValue()} storeLocation={selectedCityStore} pincode={pincode} numberOfItem={calculateTotalItem()} products={filteredCartItems}/>
+      <CheckoutPage name={name} mobileNumber={mobileNumber} deliveryDate={selectedDeliveryDate} deliveryTimeSlot={selectedDeliveryTime} isOrderForLater={isOrderForLater} address={address} amount={calculateTotalValue()} storeLocation={selectedCityStore} pincode={pincode} numberOfItem={calculateTotalItem()} products={filteredCartItems}/>
     ) : (
     <div>
      
@@ -169,23 +201,7 @@ return (
   ))
 }
 
-            {/* {cartItems.map((item, index) => (
-            
-  <tr key={`${item.item && item.item._id}-${index}`}>
-    <td>{item.item && item.item.name}</td>
-    <td>{item && item.item && item.quantity ? item.quantity : 0}</td>
-    <td>{item.item && item.selectedQuantityAndMrp && item.selectedQuantityAndMrp.mrp ? parseFloat(item.selectedQuantityAndMrp.mrp) : 0}</td>
-    <td>{item.item &&item.selectedQuantityAndMrp && item.selectedQuantityAndMrp.mrp && item.quantity ? parseFloat(item.selectedQuantityAndMrp.mrp) * item.quantity : 0}</td>
-    <td>
-      <button
-        className="btn btn-danger btn-responsive"
-        onClick={() => removeItemFromCart(item.item._id)}
-      >
-        Remove
-      </button>
-    </td>
-  </tr>
-))} */}
+        
 
   <tr>
     <td colSpan="3"></td>
@@ -236,11 +252,48 @@ return (
         rows={4}
       />
     </Form.Group>
-       
-    {/* <Form.Group controlId="storeLocation" className="mt-3">
-      <Form.Label className="me-4">Select Store:</Form.Label>
-      <AreaSelection setSelectedCityStore={setSelectedCityStore} />
-    </Form.Group> */}
+    <Form.Group controlId="formIsOrderForLater" className="mt-3">
+              <Form.Check
+                type="checkbox"
+                label="Is Order for Later"
+                checked={isOrderForLater}
+                onChange={(e) => setIsOrderForLater(e.target.checked)}
+              />
+            </Form.Group>
+
+            {/* Delivery date input (conditionally rendered when "Is Order for Later" is selected) */}
+            {isOrderForLater && (
+              <Form.Group controlId="formDeliveryDate" className="mt-3">
+                <Form.Label>Select Delivery Date:</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={selectedDeliveryDate}
+                  onChange={(e) => setSelectedDeliveryDate(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]} // Set minimum date to today
+                 max={calculateNextDeliveryDate()} // Set maximum date to tomorrow
+                
+
+                />
+              </Form.Group>
+            )}
+
+
+            {/* Delivery time input (conditionally rendered when "Is Order for Later" is selected) */}
+            {isOrderForLater && (
+              <Form.Group controlId="formDeliveryTime" className="mt-3">
+                <Form.Label>Select Delivery Time:</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={selectedDeliveryTime}
+                  onChange={(e) => setSelectedDeliveryTime(e.target.value)}
+                required
+                >
+                  <option value="11am to 1pm">11am to 1pm</option>
+                  <option value="5pm to 7pm">5pm to 7pm</option>
+                </Form.Control>
+              </Form.Group>
+            )}
+  
     <Form.Group controlId="formPincode" className="mt-3">
             <Form.Label>Pincode: </Form.Label>
             <Form.Control
@@ -256,14 +309,28 @@ return (
               You can't place an order with this pincode. Please enter a valid Bhopal pincode.
             </Alert>
           )}
+          
           <div className="d-grid gap-2 mt-3">
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={handleProceedToCheckout}
-            >
-              Proceed to Checkout
-            </button>
-          </div>
+                    <button
+                      className="btn btn-primary btn-lg"
+                      onClick={handleProceedToCheckout}
+                      disabled={(isTuesday() || isInvalidTime())&&!isOrderForLater}
+                    >
+                      Proceed to Checkout
+                    </button>
+                  </div>
+
+                  {/* Display a message when conditions are met */}
+                  {isTuesday() && (
+                    <Alert variant="info" className="mt-3">
+                    We are closed on every Tuesday. Yon can place an order on Wednesday to Monday.
+                    </Alert>
+                  )}
+                  {isInvalidTime() && !isTuesday() && (
+                    <Alert variant="info" className="mt-3">
+                    We do not accept orders between 7:30 pm to 9 am. Order during our working hours.
+                     </Alert>
+                  )}
 
   
   </div>

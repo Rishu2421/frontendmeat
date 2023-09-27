@@ -4,7 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import backendUrl from '../../../config';
 import { useMediaQuery } from "react-responsive";
-const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,storeLocation,pincode }) => {
+const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,storeLocation,pincode,isOrderForLater,deliveryTimeSlot,deliveryDate }) => {
   const isMobile = useMediaQuery({ maxWidth: 741 }); // Define mobile breakpoint
 
   const  userId= Cookies.get('userId');
@@ -177,6 +177,9 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
         userId,
         amount:totalAmount+50,
         pincode,
+        deliveryTimeSlot,
+        deliveryDate,
+        isOrderForLater
       };
    
       const response = await axios.post(`${backendUrl}/api/payment/cashondelivery`, data);
@@ -216,8 +219,11 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
         <div class="address">
            <h5 id="total_items">Total item - {numberOfItem}</h5>
            <p>address:</p>
+           
            <h3 id="delivery_address">{address}</h3>
-           <button onclick="navigateToDashboard();">Change</button><br/>
+           {isOrderForLater&&(<h3>This Order is for later.</h3>)}
+           {isOrderForLater&& (<h5 style={{fontSize:"1rem"}}>Delivery Date:- {deliveryDate} </h5>)}
+           {isOrderForLater&& (<h5 style={{fontSize:"1rem"}}>Time slot:- {deliveryTimeSlot} </h5>)}
            {/* <!-- <h3>The product will be delivered by </h3> -->
            <!-- <p>11-Nov-2022</p> --> */}
 

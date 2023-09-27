@@ -15,7 +15,7 @@ const RemoveItem = ({ itemId, onDelete }) => {
   };
 
   return (
-    <button onClick={handleDelete}>Remove</button>
+    <button className="btn btn-danger mt-1" onClick={handleDelete}>Remove</button>
   );
 };
 

@@ -9,6 +9,7 @@ import Testimonials from "./inner_components_index/Testimonials/Testimonials";
 import { useNavigate } from "react-router-dom";
 import Marinades from "./inner_components_index/Marinades/Marinades";
 import RawMenu from "./inner_components_index/RawMenu/RawMenu";
+import OpeningTimes from "./inner_components_index/AboutUs/OpeningTimes";
 
 function Body({ categoryChoice }){
   const navigate=useNavigate();
@@ -29,6 +30,7 @@ function Body({ categoryChoice }){
       {/* <RawMenu /> */}
       <Meetgram />
       <AboutUs />
+      <OpeningTimes />
       <Testimonials />
         </div>
     )
