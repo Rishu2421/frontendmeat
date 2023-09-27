@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import backendUrl from "../../../../config";
 
 const AdminOrderItem = ({
   order,
@@ -11,7 +12,7 @@ const AdminOrderItem = ({
   products,
   orderForLater,
   deliveryDate,
-  deliveryTimeSlot
+  deliveryTimeSlot,
 }) => {
   // Maintain local state for the status
   const [status, setStatus] = useState(order.status);
@@ -21,40 +22,43 @@ const AdminOrderItem = ({
     setStatus(order.status);
   }, [order.status]);
   const statusClasses = {
-        'Not processed': 'table-secondary',
-        'Processing': 'table-warning',
-        'Shipped': 'table-info',
-        'Delivered': 'table-success',
-        'Cancelled': 'table-danger',
-      };
-    
+    "Not processed": "table-secondary",
+    Processing: "table-warning",
+    Shipped: "table-info",
+    Delivered: "table-success",
+    Cancelled: "table-danger",
+  };
+
   return (
-    <div className={`card-body ${status === 'Cancelled' ? 'bg-danger text-white' : ''}`}>
-       {orderForLater&&(<h3>This Order is for later.</h3>)}
-       {orderForLater && (
+    <div
+      className={`card-body ${
+        status === "Cancelled" ? "bg-danger text-white" : ""
+      }`}
+    >
+      {orderForLater && <h3>This Order is for later.</h3>}
+      {orderForLater && (
         <h5 style={{ fontSize: "1rem" }}>
-            Delivery Date: {new Date(deliveryDate).toLocaleDateString()}
+          Delivery Date: {new Date(deliveryDate).toLocaleDateString()}
         </h5>
-        )}
-        {orderForLater&&(
-            <h5 style={{fontSize:"1rem"}}>
-             Time slot:- {deliveryTimeSlot} 
-           </h5>
-        )}
-        <hr />
-              <h5 className="card-title">Order #{orderNumber}</h5>
-      <p className="card-text">Order Date: {new Date(orderDate).toLocaleDateString()}</p>
+      )}
+      {orderForLater && (
+        <h5 style={{ fontSize: "1rem" }}>Time slot:- {deliveryTimeSlot}</h5>
+      )}
+      <hr />
+      <h5 className="card-title">Order #{orderNumber}</h5>
+      <p className="card-text">
+        Order Date: {new Date(orderDate).toLocaleDateString()}
+      </p>
       <p className="card-text">Total Amount: {totalAmount}</p>
       <p className="card-text">Mobile Number: {mobileNumber}</p>
       <p className="card-text">User Name: {userName}</p>
       <p className="card-text">Address: {address}</p>
-     
-        
 
       <table className="table table-striped table-responsive table-bordered table-hover table-condensed">
         <thead>
           <tr>
             <th>Product</th>
+            <th>Product Name</th>
             <th>Selected Quantity</th> {/* Show selected quantity */}
             <th>Selected Pieces</th> {/* Show selected quantity */}
             <th>MRP</th> {/* Show MRP */}
@@ -64,23 +68,43 @@ const AdminOrderItem = ({
           </tr>
         </thead>
         <tbody>
-        {products && products.map((product, index) => (
-            <tr key={index} className={statusClasses[status]}>
-              <td>
-                {product.item ? (
-                  <span>{product.item.name}</span>
-                ) : (
-                  <span className="text-danger">Admin deleted this product</span>
-                )}
-              </td>
-              <td>{product.selectedQuantityAndMrp?.quantity || 'N/A'}</td>
-              <td>{product.selectedQuantityAndMrp?.pieces || 'N/A'}</td>
-              <td>{product.selectedQuantityAndMrp?.mrp || 'N/A'}</td>
-              <td>{product.quantity}</td>
-              <td>{(product.selectedQuantityAndMrp?.mrp || 0) * product.quantity}</td>
-              <td>{status}</td>
-            </tr>
-          ))}
+          {products &&
+            products.map((product, index) => (
+              <tr key={index} className={statusClasses[status]}>
+                <td>
+                  {product.item ? (
+                    <span>
+                      <img
+                        src={`${backendUrl}${product.item.image}`}
+                        alt="product"
+                      />
+                    </span>
+                  ) : (
+                    <span className="text-danger">
+                      Admin deleted this product
+                    </span>
+                  )}
+                </td>
+                <td>
+                  {product.item ? (
+                    <span>{product.item.name}</span>
+                  ) : (
+                    <span className="text-danger">
+                      Admin deleted this product
+                    </span>
+                  )}
+                </td>
+                <td>{product.selectedQuantityAndMrp?.quantity || "N/A"}</td>
+                <td>{product.selectedQuantityAndMrp?.pieces || "N/A"}</td>
+                <td>{product.selectedQuantityAndMrp?.mrp || "N/A"}</td>
+                <td>{product.quantity}</td>
+                <td>
+                  {(product.selectedQuantityAndMrp?.mrp || 0) *
+                    product.quantity}
+                </td>
+                <td>{status}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
@@ -88,65 +112,3 @@ const AdminOrderItem = ({
 };
 
 export default AdminOrderItem;
-
-// import React from 'react';
-
-// const AdminOrderItem = ({
-//   orderDate,
-//   orderNumber,
-//   totalAmount,
-//   mobileNumber,
-//   userName,
-//   address,
-//   products,
-//   status
-// }) => {
-//   // Define a mapping of status values to Bootstrap contextual classes
-//   const statusClasses = {
-//     'Not processed': 'table-secondary',
-//     'Processing': 'table-warning',
-//     'Shipped': 'table-info',
-//     'Delivered': 'table-success',
-//     'Cancelled': 'table-danger',
-//   };
-
-//   return (
-//     <div className="card-body">
-//       <h5 className="card-title">Order #{orderNumber}</h5>
-//       <p className="card-text">Order Date: {orderDate}</p>
-//       <p className="card-text">Total Amount: {totalAmount}</p>
-//       <p className="card-text">Mobile Number: {mobileNumber}</p>
-//       <p className="card-text">User Name: {userName}</p>
-//       <p className="card-text">Address: {address}</p>
-
-//       <table className="table table-striped table-responsive table-bordered table-hover table-condensed">
-//         <thead>
-//           <tr>
-//             <th>Product</th>
-//             <th>Selected Quantity</th> {/* Show selected quantity */}
-//             <th>Selected Pieces</th> {/* Show selected quantity */}
-//             <th>MRP</th> {/* Show MRP */}
-//             <th>Num Of Item</th>
-//             <th>Subtotal</th>
-//             {/* <th>Status</th> */}
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {products.map((product, index) => (
-            // <tr key={index} className={statusClasses[status]}>
-//               <td>{product.item.name}</td>
-//               <td>{product.selectedQuantityAndMrp.quantity}</td>
-//               <td>{product.selectedQuantityAndMrp.pieces || 'N/A'}</td>
-//               <td>{product.selectedQuantityAndMrp.mrp}</td>
-//               <td>{product.quantity}</td>
-//               <td>{product.selectedQuantityAndMrp.mrp * product.quantity}</td>
-//               {/* <td>{status}</td> */}
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default AdminOrderItem;

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import backendUrl from "../../../config";
-import './Banner.css'; // Import your custom styles for the banner if needed
+import "./Banner.css"; // Import your custom styles for the banner if needed
 import { useMediaQuery } from "react-responsive";
 
 function Banner() {
@@ -43,7 +43,7 @@ function Banner() {
               className="image homepage-slider-image bg-yellow"
               style={{
                 backgroundImage: `url(${backendUrl}${image.image})`,
-                backgroundSize: isMobile ? "contain" : "cover", // Adjust the backgroundSize property
+                backgroundSize: isMobile ? "contain" : "contain", // Adjust the backgroundSize property
                 backgroundPosition: "center center",
                 backgroundRepeat: "no-repeat",
                 width: isMobile ? "100%" : "100%", // Adjust the width for desktop
@@ -104,7 +104,6 @@ export default Banner;
 //     };
 //   }, [images.length]);
 
-
 //   return (
 //     <div id="homepage-slider" className="st-slider">
 //       <input type="radio" className="cs_anchor radio" name="slider" id="slide1"/>
@@ -116,7 +115,7 @@ export default Banner;
 //         <div className="images-inner">
 //           {images.map((image, index) => (
 //             <div className={`image-slide ${currentImageIndex === index ? 'active' : ''}`}
-            
+
 //             key={index}>
 //                <div
 //                 className="image bg-yellow"
@@ -135,7 +134,6 @@ export default Banner;
 //       </div>
 
 //       <div className="labels">
-        
 
 //         <div className="fake-radio">
 //           {images.map((_, index) => (
@@ -149,15 +147,13 @@ export default Banner;
 
 // export default Banner;
 
-
 // {/* <section className="banner">
 // <div>
 // <div id="myCarousel" className="carousel slide" data-bs-ride="carousel">
 //     <div className="carousel-inner">
 
-
 //     {images.map((banner, index) => (
-        
+
 //       <div className="carousel-item active">
 // <img src={`${backendUrl}${banner.image}`} alt={`Banner ${index + 1}`} />
 // </div>
@@ -201,7 +197,3 @@ export default Banner;
 //     <span class="sr-only">Next</span>
 //   </a>
 // </div> */}
-
-
-
-
