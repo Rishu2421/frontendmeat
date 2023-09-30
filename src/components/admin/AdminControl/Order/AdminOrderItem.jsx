@@ -54,7 +54,9 @@ const AdminOrderItem = ({
       <table className="table table-striped table-responsive table-bordered table-hover table-condensed">
         <thead>
           <tr>
-            <th>Product</th>
+          
+          <th>Product</th>
+            <th>Product Name</th>
             <th>Selected Quantity</th> {/* Show selected quantity */}
             <th>Selected Pieces</th> {/* Show selected quantity */}
             <th>MRP</th> {/* Show MRP */}
@@ -66,6 +68,13 @@ const AdminOrderItem = ({
         <tbody>
         {products && products.map((product, index) => (
             <tr key={index} className={statusClasses[status]}>
+            <td>
+                {product.item ? (
+                  <span>{product.item.image}</span>
+                ) : (
+                  <span className="text-danger">Admin deleted this product</span>
+                )}
+              </td>
               <td>
                 {product.item ? (
                   <span>{product.item.name}</span>

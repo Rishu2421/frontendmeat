@@ -108,7 +108,7 @@ const AdminOrderPage = () => {
       ) : orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        <AdminOrderContainer isAdmin={true} isNew={isNewOrder} orders={orders} handleConfirmOrder={handleConfirmOrder} />
+        <AdminOrderContainer updateOrder={setOrders} isAdmin={true} isNew={isNewOrder} orders={orders} handleConfirmOrder={handleConfirmOrder} />
       )}
     </div>
   );

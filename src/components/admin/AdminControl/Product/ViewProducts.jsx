@@ -13,11 +13,46 @@ const ViewProducts = () => {
 const [subcategories, setSubcategories] = useState([]);
 const [editedImage, setEditedImage] = useState(null);
 
-  useEffect(() => {
-    // Fetch products from backend API
-    // Replace 'your-backend-api-endpoint' with your actual backend API endpoint
-    fetchProducts();
-  }, []);
+// Inside your component function
+useEffect(() => {
+  // console.log('Initial editedProduct.category:', editedProduct.category);
+  // console.log('Initial editedProduct.subcategory:', editedProduct.subcategory);
+
+  // Fetch products from backend API
+  fetchProducts();
+}, []);
+
+const handleCategoryChange = (e) => {
+  const selectedCategoryName = e.target.value;
+
+  console.log('Selected category:', selectedCategoryName);
+
+  // Find the selected category object based on its name
+  const selectedCategory = categories.find(
+    (category) => category.name === selectedCategoryName
+  );
+
+  console.log('Selected category object:', selectedCategory);
+
+  if (selectedCategory) {
+    // Update the subcategories state with the subcategories of the selected category
+    setSubcategories(selectedCategory.subcategories);
+  } else {
+    // If no category is selected or found, reset the subcategories state
+    setSubcategories([]);
+  }
+
+  // Update the edited product's category
+  setEditedProduct({
+    ...editedProduct,
+    category: selectedCategoryName,
+    subcategory: '', // Reset the subcategory when the category changes
+  });
+
+  console.log('Updated editedProduct.category:', editedProduct.category);
+  console.log('Updated editedProduct.subcategory:', editedProduct.subcategory);
+};
+
 
   const fetchProducts = async () => {
     try {
@@ -34,29 +69,29 @@ const [editedImage, setEditedImage] = useState(null);
       .then((data) => setCategories(data))
       .catch((error) => console.error('Error fetching categories:', error));
   }, []);
-  const handleCategoryChange = (e) => {
-    const selectedCategoryName = e.target.value;
+  // const handleCategoryChange = (e) => {
+  //   const selectedCategoryName = e.target.value;
   
-    // Find the selected category object based on its name
-    const selectedCategory = categories.find(
-      (category) => category.name === selectedCategoryName
-    );
+  //   // Find the selected category object based on its name
+  //   const selectedCategory = categories.find(
+  //     (category) => category.name === selectedCategoryName
+  //   );
   
-    if (selectedCategory) {
-      // Update the subcategories state with the subcategories of the selected category
-      setSubcategories(selectedCategory.subcategories);
-    } else {
-      // If no category is selected or found, reset the subcategories state
-      setSubcategories([]);
-    }
+  //   if (selectedCategory) {
+  //     // Update the subcategories state with the subcategories of the selected category
+  //     setSubcategories(selectedCategory.subcategories);
+  //   } else {
+  //     // If no category is selected or found, reset the subcategories state
+  //     setSubcategories([]);
+  //   }
   
-    // Update the edited product's category
-    setEditedProduct({
-      ...editedProduct,
-      category: selectedCategoryName,
-      subcategory: '', // Reset the subcategory when the category changes
-    });
-  };
+  //   // Update the edited product's category
+  //   setEditedProduct({
+  //     ...editedProduct,
+  //     category: selectedCategoryName,
+  //     subcategory: '', // Reset the subcategory when the category changes
+  //   });
+  // };
   
 
 
@@ -306,7 +341,6 @@ const [editedImage, setEditedImage] = useState(null);
               >
                 Add Quantity and MRP
               </Button>
-
               <Form.Group controlId="editProductCategory">
                 <Form.Label>Category</Form.Label>
                 <Form.Control
@@ -314,15 +348,16 @@ const [editedImage, setEditedImage] = useState(null);
                   value={editedProduct.category}
                   onChange={handleCategoryChange}
                 >
-                  <option value="">Select a category</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category.name}>
-                      {category.name}
+                  {categories.map((cat, index) => (
+                    <option key={index} value={cat.name}>
+                      {cat.name}
+                   
+                {console.log(cat.name)}
+                     
                     </option>
                   ))}
                 </Form.Control>
               </Form.Group>
-
               <Form.Group controlId="editProductSubcategory">
                 <Form.Label>Subcategory</Form.Label>
                 <Form.Control
@@ -396,75 +431,4 @@ const [editedImage, setEditedImage] = useState(null);
 
 
 export default ViewProducts;
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import { Card, Container, Row, Col } from 'react-bootstrap';
-// import RemoveItem from './RemoveItem';
-// import '../control.css';
-// import backendUrl from '../../../../config';
-// const ViewProducts = () => {
-//   const [products, setProducts] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch products from backend API
-//     // Replace 'your-backend-api-endpoint' with your actual backend API endpoint
-//     fetch(`${backendUrl}/api/products/allproducts`)
-//       .then(response => response.json())
-//       .then(data => setProducts(data))
-//       .catch(error => console.error('Error fetching products:', error));
-//   }, []);
-
-//   const appendTimestamp = (url) => {
-//     const timestamp = Date.now();
-//     return url + `?timestamp=${timestamp}`;
-//   };
-
-  // const handleDeleteItem = (itemId) => {
-  //   // Remove the deleted item from the products list
-  //   const updatedProducts = products.filter(product => product._id !== itemId);
-  //   setProducts(updatedProducts);
-  // };
-
-//   return (
-//     <Container>
-//       <h2>View Products</h2>
-//       <Row className="d-flex">
-//         {products.map(product => (
-//           <Col key={product._id} sm={6} md={4} lg={3}>
-//             <div className="h-100">
-//               <Card className="mb-4 h-100">
-//                 <div className="card-image-container">
-
-//                 {/* correct when deploying */}
-//                   <Card.Img
-//                     variant="top"
-//                     src={`${backendUrl}${appendTimestamp(product.image)}`}
-//                     alt={product.name}
-//                     className="img-fluid h-100"
-//                   />
-//                 </div>
-//                 <Card.Body>
-//                   <Card.Title>{product.name}</Card.Title>
-//                   <Card.Text>{product.description}</Card.Text>
-//                   <Card.Text>Price: {product.price}</Card.Text>
-//                   <div className="additional-info">
-//                     <p>Top Selling: {product.isTopSelling ? 'Yes' : 'No'}</p>
-//                     <p>Boneless: {product.isBoneless ? 'Yes' : 'No'}</p>
-//                     <p>Category: {product.category}</p>
-//                   </div>
-                  // <RemoveItem itemId={product._id} onDelete={handleDeleteItem} />
-//                 </Card.Body>
-//               </Card>
-//             </div>
-//           </Col>
-//         ))}
-//       </Row>
-//     </Container>
-//   );
-// };
-
-// export default ViewProducts;
-
 

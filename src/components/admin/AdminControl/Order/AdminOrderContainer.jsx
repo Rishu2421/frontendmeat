@@ -3,10 +3,13 @@ import axios from 'axios';
 import AdminOrderItem from './AdminOrderItem';
 import backendUrl from '../../../../config';
 import PrintableBill from '../../../orders/Print/PrintableBill';
-
-const AdminOrderContainer = ({ orders, handleConfirmOrder }) => {
+import EditOrderModal from './EditOrderModal'; 
+import Cookies from 'js-cookie';
+const AdminOrderContainer = ({ updateOrder,orders, handleConfirmOrder }) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editedOrder, setEditedOrder] = useState(null);
+  const [isOrderPickedUpMap, setIsOrderPickedUpMap] = useState({});
   // Use a map to track the current status for each order
   const [currentStatusMap, setCurrentStatusMap] = useState({});
 
@@ -28,6 +31,45 @@ const AdminOrderContainer = ({ orders, handleConfirmOrder }) => {
     }
     setIsLoading(false);
   };
+  const handleEdit = (order) => {
+    setIsEditModalOpen(true);
+    setEditedOrder(order);
+  };
+
+
+  const handleSaveEdit = async (updatedOrder) => {
+    const adminToken = Cookies.get('adminToken');
+    const orderId = updatedOrder._id;
+    try {
+      const response = await axios.put(
+        `${backendUrl}/api/orders/admin/updateOrder/${orderId}`,
+        updatedOrder,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+  
+      // Handle success and update the UI or display a success message
+      alert('Order updated successfully');
+  
+      // Close the edit modal
+      setIsEditModalOpen(false);
+  
+      // Update the order in the state
+      updateOrder((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === updatedOrder._id ? updatedOrder : order
+        )
+      );
+    } catch (error) {
+      console.error('Error updating order:', error);
+      // Handle error and display an error message
+      alert('Failed to update order');
+    }
+  };
+  
 
   // Sample bill data
   const billData = {
@@ -52,7 +94,7 @@ const AdminOrderContainer = ({ orders, handleConfirmOrder }) => {
       {orders.map((order, index) => (
         <div key={order._id} className={`card mb-4 ${order.isNew ? 'new-order' : ''}`}>
           <AdminOrderItem
-            order={order} // Pass the entire order object
+            order={order}
             orderDate={order.createdAt}
             orderNumber={order._id}
             totalAmount={order.amount}
@@ -61,11 +103,12 @@ const AdminOrderContainer = ({ orders, handleConfirmOrder }) => {
             orderForLater={order.isOrderForLater}
             deliveryTimeSlot={order.deliveryTimeSlot}
             deliveryDate={order.deliveryDate}
-            address={`${order.address}, ${order.pincode}`} // Show address with pincode
+            address={`${order.address}, ${order.pincode}`}
             products={order.items}
-            status={currentStatusMap[order._id] || order.status} // Use current status from the map or the original status
+            status={currentStatusMap[order._id] || order.status}
             onConfirmOrder={() => handleConfirmOrder(order._id)}
             onUpdateStatus={(status) => updateOrderStatus(order._id, status)}
+            onEdit={() => handleEdit(order)}
           />
           <div className="mt-2 d-flex align-items-center">
             <div className="me-2">
@@ -84,21 +127,36 @@ const AdminOrderContainer = ({ orders, handleConfirmOrder }) => {
               </select>
               {isLoading && <span className="ms-2">Changing status...</span>}
             </div>
+            
             <div>
+            <label>
+                Is Order Picked Up:{" "}
+                <input
+                  type="checkbox"
+                  checked={isOrderPickedUpMap[order._id] || false}
+                  onChange={() =>
+                    setIsOrderPickedUpMap((prevState) => ({
+                      ...prevState,
+                      [order._id]: !prevState[order._id],
+                    }))
+                  }
+                />
+              </label>
+              {/* Include the PrintableBill component here */}
               <PrintableBill
+                discount={order.discount}
                 billData={billData}
-                key={index + 1}
                 orderDate={order.createdAt}
                 orderNumber={order._id}
                 totalAmount={order.amount}
                 mobileNumber={order.mobileNumber}
                 userName={order.name}
+                storePickUp={isOrderPickedUpMap[order._id] || false}
                 address={order.address + ' ' + order.pincode}
                 products={
                   order.items
                     ? order.items.map((item) => {
                         if (item && item.item) {
-                          // If 'item' and 'item.item' are not null, create a product object
                           return {
                             productName: item.item.name,
                             price: `Rs.${item.selectedQuantityAndMrp.mrp}`,
@@ -107,13 +165,20 @@ const AdminOrderContainer = ({ orders, handleConfirmOrder }) => {
                             productId: `${item.item._id}`,
                           };
                         } else {
-                          // If 'item' or 'item.item' is null, create a placeholder object
                           return { deleted: true };
                         }
                       })
-                    : [] // Handle the case where 'order.items' is null or empty
+                    : []
                 }
               />
+              <button onClick={handleEdit}>Edit Order</button>
+              {isEditModalOpen && (
+                <EditOrderModal
+                  order={order}
+                  onSave={handleSaveEdit}
+                  onClose={() => setIsEditModalOpen(false)}
+                />
+              )}
             </div>
           </div>
         </div>
