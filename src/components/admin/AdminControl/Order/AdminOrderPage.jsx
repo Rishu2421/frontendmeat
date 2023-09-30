@@ -1,13 +1,12 @@
 // adminorderpage.jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import AdminOrderContainer from './AdminOrderContainer';
-import Cookies from 'js-cookie';
-import LoadingOverlay from '../../../Loading/LoadingOverlay';
-import backendUrl from '../../../../config';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import AdminOrderContainer from "./AdminOrderContainer";
+import Cookies from "js-cookie";
+import LoadingOverlay from "../../../Loading/LoadingOverlay";
+import backendUrl from "../../../../config";
 
 const AdminOrderPage = () => {
-
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -16,12 +15,15 @@ const AdminOrderPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const adminToken = Cookies.get('adminToken');
-        const response = await axios.get(`${backendUrl}/api/orders/admin/today`, {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
+        const adminToken = Cookies.get("adminToken");
+        const response = await axios.get(
+          `${backendUrl}/api/orders/admin/today`,
+          {
+            headers: {
+              Authorization: `Bearer ${adminToken}`,
+            },
           },
-        });
+        );
 
         const { success, orders } = response.data;
 
@@ -36,7 +38,7 @@ const AdminOrderPage = () => {
           // You might want to show an error message to the user.
         }
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error("Error fetching orders:", error);
         setIsLoading(false);
       }
     };
@@ -45,8 +47,8 @@ const AdminOrderPage = () => {
       if (newOrders.length > 0) {
         const lastOrder = newOrders[0];
         if (lastOrder._id !== orders[0]?._id && !isPlayingAudio) {
-        //   const audio = new Audio('/audio/notification.mp3');
-        //   audio.play();
+          //   const audio = new Audio('/audio/notification.mp3');
+          //   audio.play();
           setIsPlayingAudio(true);
           setIsNewOrder(true);
         }
@@ -64,7 +66,7 @@ const AdminOrderPage = () => {
   }, [orders, isPlayingAudio]);
 
   const stopAudio = () => {
-    const audio = document.querySelector('audio');
+    const audio = document.querySelector("audio");
     if (audio) {
       audio.pause();
       setIsPlayingAudio(false);
@@ -84,7 +86,7 @@ const AdminOrderPage = () => {
       setIsNewOrder(false);
       stopAudio();
     } catch (error) {
-      console.error('Error confirming order:', error);
+      console.error("Error confirming order:", error);
       // Handle any errors here
     }
   };
@@ -97,8 +99,8 @@ const AdminOrderPage = () => {
         <div>
           <audio src="/audio/notification.mp3" controls autoPlay></audio>
           <p>New order placed!</p>
-          <button className="btn btn-primary" onClick={stopAudio}>
-            Stop Sound
+          <button className="btn btn-success" onClick={stopAudio}>
+            Stop Sound And Confirm Order
           </button>
         </div>
       )}
@@ -108,14 +110,22 @@ const AdminOrderPage = () => {
       ) : orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
+<<<<<<< HEAD
         <AdminOrderContainer updateOrder={setOrders} isAdmin={true} isNew={isNewOrder} orders={orders} handleConfirmOrder={handleConfirmOrder} />
+=======
+        <AdminOrderContainer
+          isAdmin={true}
+          isNew={isNewOrder}
+          orders={orders}
+          handleConfirmOrder={handleConfirmOrder}
+        />
+>>>>>>> 3731fb22bb95a48dcc27dda75af19b8c9ca50eae
       )}
     </div>
   );
 };
 
 export default AdminOrderPage;
-
 
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
@@ -140,9 +150,9 @@ export default AdminOrderPage;
 //               Authorization: `Bearer ${adminToken}`,
 //             },
 //           });
-          
+
 //           const { success, orders } = response.data;
-          
+
 //           if (success) {
 //             setOrders(orders);
 //             setIsLoading(false);
