@@ -20,7 +20,6 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
 
 
 
-
   useEffect(() => {
     const razorpaySuccessHandler = (response) => {
       savePaymentDetails(
@@ -179,7 +178,9 @@ const CheckoutPage = ({name,mobileNumber,address, amount, products,numberOfItem,
         pincode,
         deliveryTimeSlot,
         deliveryDate,
-        isOrderForLater
+        isOrderForLater,
+        isDeliveryCharged:true,
+        discount:discount?30:0
       };
    
       const response = await axios.post(`${backendUrl}/api/payment/cashondelivery`, data);

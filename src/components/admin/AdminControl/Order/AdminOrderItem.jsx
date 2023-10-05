@@ -57,12 +57,8 @@ const AdminOrderItem = ({
       <table className="table table-striped table-responsive table-bordered table-hover table-condensed">
         <thead>
           <tr>
-<<<<<<< HEAD
           
           <th>Product</th>
-=======
-            <th>Product</th>
->>>>>>> 3731fb22bb95a48dcc27dda75af19b8c9ca50eae
             <th>Product Name</th>
             <th>Selected Quantity</th> {/* Show selected quantity */}
             <th>Selected Pieces</th> {/* Show selected quantity */}
@@ -73,7 +69,6 @@ const AdminOrderItem = ({
           </tr>
         </thead>
         <tbody>
-<<<<<<< HEAD
         {products && products.map((product, index) => (
             <tr key={index} className={statusClasses[status]}>
             <td>
@@ -98,45 +93,6 @@ const AdminOrderItem = ({
               <td>{status}</td>
             </tr>
           ))}
-=======
-          {products &&
-            products.map((product, index) => (
-              <tr key={index} className={statusClasses[status]}>
-                <td>
-                  {product.item ? (
-                    <span>
-                      <img
-                        src={`${backendUrl}${product.item.image}`}
-                        alt="product"
-                      />
-                    </span>
-                  ) : (
-                    <span className="text-danger">
-                      Admin deleted this product
-                    </span>
-                  )}
-                </td>
-                <td>
-                  {product.item ? (
-                    <span>{product.item.name}</span>
-                  ) : (
-                    <span className="text-danger">
-                      Admin deleted this product
-                    </span>
-                  )}
-                </td>
-                <td>{product.selectedQuantityAndMrp?.quantity || "N/A"}</td>
-                <td>{product.selectedQuantityAndMrp?.pieces || "N/A"}</td>
-                <td>{product.selectedQuantityAndMrp?.mrp || "N/A"}</td>
-                <td>{product.quantity}</td>
-                <td>
-                  {(product.selectedQuantityAndMrp?.mrp || 0) *
-                    product.quantity}
-                </td>
-                <td>{status}</td>
-              </tr>
-            ))}
->>>>>>> 3731fb22bb95a48dcc27dda75af19b8c9ca50eae
         </tbody>
       </table>
     </div>

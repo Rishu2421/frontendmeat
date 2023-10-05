@@ -5,10 +5,14 @@ const EditOrderModal = ({ order, onSave, onClose }) => {
     const [editedOrder, setEditedOrder] = useState({ ...order });
     const [discountPercentage, setDiscountPercentage] = useState(
         order.discount || 0
-      );const [totalAmount, setTotalAmount] = useState(order.amount);
+      );
+      const [totalAmount, setTotalAmount] = useState(order.amount);
+      const [isDeliveryCharged, setIsDeliveryCharged] = useState(order.isDeliveryCharged || false);
+
   
-    useEffect(() => {
-        // Recalculate the total amount whenever editedOrder or discountPercentage changes
+      useEffect(() => {
+        console.log(isDeliveryCharged)
+        // Recalculate the total amount whenever editedOrder, discountPercentage, or isDeliveryCharged changes
         const calculateTotalAmount = () => {
           let total = 0;
           editedOrder.items.forEach((item) => {
@@ -20,13 +24,20 @@ const EditOrderModal = ({ order, onSave, onClose }) => {
           const discountAmount = (total * discountPercentage) / 100;
           total -= discountAmount;
     
+          // Subtract delivery charge if isDeliveryCharged is false
+          
+          if (isDeliveryCharged) {
+            total += 50;
+          }
+    
           setTotalAmount(total);
         };
     
         calculateTotalAmount();
-      }, [editedOrder, discountPercentage]);
+      }, [editedOrder, discountPercentage, isDeliveryCharged]);
     
-    const handleInputChange = (e) => {
+      const handleInputChange = (e) => {
+
       const { name, value } = e.target;
       setEditedOrder({
         ...editedOrder,
@@ -77,6 +88,10 @@ const EditOrderModal = ({ order, onSave, onClose }) => {
     const handleDiscountPercentageChange = (e) => {
         setDiscountPercentage(parseFloat(e.target.value) || 0);
       };
+      const handleIsDeliveryChargedChange = (e) => {
+        setIsDeliveryCharged(e.target.value === 'true');
+      };
+    
     
       const handleSave = () => {
         // Calculate the discount amount based on the percentage
@@ -86,6 +101,7 @@ const EditOrderModal = ({ order, onSave, onClose }) => {
           ...editedOrder,
           amount: totalAmount , // Apply the discount
           discount:discountPercentage,
+          isDeliveryCharged,
         };
     
         onSave(updatedOrder);
@@ -124,7 +140,7 @@ const EditOrderModal = ({ order, onSave, onClose }) => {
               <hr />
               {/* <Form.Group controlId={`item_quantity-${item._id}`}> */}
       <Form.Label>Quantity</Form.Label>
-   {console.log(item.quantity)}
+   
       <Form.Control
         type="number"
         name={`item_quantity-${item._id}`}
@@ -203,7 +219,20 @@ const EditOrderModal = ({ order, onSave, onClose }) => {
               value={discountPercentage}
               onChange={handleDiscountPercentageChange}
             />
+          </Form.Group> 
+          <Form.Group controlId="isDeliveryCharged">
+            <Form.Label>Is Delivery Charged?</Form.Label>
+            <Form.Control
+              as="select"
+              name="isDeliveryCharged"
+              value={isDeliveryCharged.toString()}
+              onChange={handleIsDeliveryChargedChange}
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </Form.Control>
           </Form.Group>
+           
           <Form.Group controlId="amount">
             <Form.Label>Amount</Form.Label>
             <Form.Control

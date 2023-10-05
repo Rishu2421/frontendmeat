@@ -310,7 +310,7 @@ return (
             </Alert>
           )}
           
-          <div className="d-grid gap-2 mt-3">
+          {/* <div className="d-grid gap-2 mt-3">
                     <button
                       className="btn btn-primary btn-lg"
                       onClick={handleProceedToCheckout}
@@ -318,9 +318,11 @@ return (
                     >
                       Proceed to Checkout
                     </button>
-                  </div>
+                  </div> */}
 
-                  {/* Display a message when conditions are met */}
+                  <Alert variant="info" className="mt-3">
+                    We are closed due to Gandhi Jayanti accepting order from wednesday Thank you.
+                    </Alert>                  {/* Display a message when conditions are met */}
                   {isTuesday() && (
                     <Alert variant="info" className="mt-3">
                     We are closed on every Tuesday. Yon can place an order on Wednesday to Monday.
